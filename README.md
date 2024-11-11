@@ -69,41 +69,4 @@ Since MealDB API does not natively support filtering by mood and time, custom ut
 
 Mood: Recipes are tagged with moods (Comfort, Refreshing, Hearty) based on keywords in the recipe name, category, or ingredients.
 Time: The estimated cooking time is determined based on instructions or default assumptions, allowing filtering by user-selected time limits.
-Example Code
-Mood and Time Categorization Functions (in utils/index.js)
-javascript
-Copy code
-export function categorizeMood(recipe) {
-  const moodKeywords = {
-    Comfort: ["soup", "casserole", "pasta", "bake", "stew"],
-    Refreshing: ["salad", "smoothie", "fruit", "cold", "chilled"],
-    Hearty: ["curry", "roast", "grill", "meat", "hearty"]
-  };
 
-  const { strMeal, strCategory } = recipe;
-  const keywords = `${strMeal} ${strCategory}`.toLowerCase();
-
-  for (const [mood, moodKeywordsArray] of Object.entries(moodKeywords)) {
-    if (moodKeywordsArray.some(keyword => keywords.includes(keyword))) {
-      return mood;
-    }
-  }
-  return "General"; // Default mood if no match
-}
-
-export function estimateCookingTime(recipe) {
-  const instructions = recipe.strInstructions.toLowerCase();
-  if (instructions.includes("quick") || instructions.includes("minutes")) {
-    return 15;
-  }
-  if (instructions.includes("hour") || instructions.length > 500) {
-    return 60;
-  }
-  return 30;
-}
-Future Improvements
-User Authentication: Allow users to save favorite recipes.
-Advanced Filters: Add filters for dietary preferences, cuisine type, etc.
-Improved Time Estimation: Use more granular parsing of recipe instructions to improve time estimates.
-License
-This project is open-source and available under no licences.
