@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# Recipe Finder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web-based Recipe Finder app that allows users to search for recipes based on ingredients or keywords, with additional filters for mood and estimated cooking time. The app fetches recipes using the [MealDB API](https://www.themealdb.com/) and provides a user-friendly interface for quick recipe browsing.
 
-## Available Scripts
+## Features
+- **Recipe Search**: Find recipes by name or keyword.
+- **Mood Filter**: Filter recipes based on mood (Comfort, Refreshing, Hearty).
+- **Time Filter**: Filter recipes by maximum estimated cooking time.
+- **Load More**: Dynamically load more recipes for broader options.
 
-In the project directory, you can run:
+## Technologies
+- **Frontend**: React, TailwindCSS
+- **API**: [MealDB API](https://www.themealdb.com/) for recipe data
+- **Icons**: `react-icons`
 
-### `npm start`
+## Setup Instructions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 1. Prerequisites
+- **Node.js**: Ensure you have Node.js installed on your machine. You can download it from [Node.js](https://nodejs.org/).
+- **API Key**: The MealDB API is free to use and doesn’t require an API key for the public search functions.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 2. Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/recipe-finder.git
+   cd recipe-finder
+Install the required dependencies:
 
-### `npm test`
+bash
+Copy code
+npm install
+Start the development server:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+bash
+Copy code
+npm start
+Open your browser and navigate to http://localhost:3000.
 
-### `npm run build`
+Project Structure
+php
+Copy code
+.
+├── public              # Static assets
+├── src
+│   ├── components      # React components
+│   │   ├── SearchBar.js        # Search bar component
+│   │   ├── RecipeCard.js       # Recipe card component for displaying each recipe
+│   │   ├── Button.js           # Reusable button component
+│   │   ├── Loader.js           # Loading spinner
+│   │   └── Recipes.js          # Main Recipes component with filtering logic
+│   ├── utils
+│   │   ├── index.js            # Utility functions for mood and time categorization
+│   ├── App.js                  # Main app component
+│   └── index.js                # Entry point
+├── README.md                   # Project documentation
+└── package.json                # Project configuration and dependencies
+Usage
+Search for Recipes
+Enter a keyword in the search bar (e.g., "Vegan," "Chicken," "Cake").
+Click the search icon or press Enter to search for recipes.
+Filter by Mood and Time
+Mood Filter: Select a mood from the dropdown (Comfort, Refreshing, Hearty). Recipes will update based on the mood selection.
+Time Filter: Select the maximum cooking time (in minutes) from the dropdown (15, 30, 45, or 60). Recipes will be filtered to match the selected time range.
+Load More Recipes
+Click the Show More button at the bottom to load additional recipes.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Custom Filtering Logic
+Since MealDB API does not natively support filtering by mood and time, custom utility functions in utils/index.js help categorize recipes as follows:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Mood: Recipes are tagged with moods (Comfort, Refreshing, Hearty) based on keywords in the recipe name, category, or ingredients.
+Time: The estimated cooking time is determined based on instructions or default assumptions, allowing filtering by user-selected time limits.
+Example Code
+Mood and Time Categorization Functions (in utils/index.js)
+javascript
+Copy code
+export function categorizeMood(recipe) {
+  const moodKeywords = {
+    Comfort: ["soup", "casserole", "pasta", "bake", "stew"],
+    Refreshing: ["salad", "smoothie", "fruit", "cold", "chilled"],
+    Hearty: ["curry", "roast", "grill", "meat", "hearty"]
+  };
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  const { strMeal, strCategory } = recipe;
+  const keywords = `${strMeal} ${strCategory}`.toLowerCase();
 
-### `npm run eject`
+  for (const [mood, moodKeywordsArray] of Object.entries(moodKeywords)) {
+    if (moodKeywordsArray.some(keyword => keywords.includes(keyword))) {
+      return mood;
+    }
+  }
+  return "General"; // Default mood if no match
+}
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export function estimateCookingTime(recipe) {
+  const instructions = recipe.strInstructions.toLowerCase();
+  if (instructions.includes("quick") || instructions.includes("minutes")) {
+    return 15;
+  }
+  if (instructions.includes("hour") || instructions.length > 500) {
+    return 60;
+  }
+  return 30;
+}
+Future Improvements
+User Authentication: Allow users to save favorite recipes.
+Advanced Filters: Add filters for dietary preferences, cuisine type, etc.
+Improved Time Estimation: Use more granular parsing of recipe instructions to improve time estimates.
+License
+This project is open-source and available under no licences.
